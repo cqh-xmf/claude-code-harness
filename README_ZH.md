@@ -1,5 +1,9 @@
 # Claude Code Harness（中文）
 
+<p align="right">
+  <a href="README.md">English</a>
+</p>
+
 <p align="center">
   <b>让 Claude Code 从"聊天工具"变成"全栈 AI 开发平台"。</b><br>
   8 核心 MCP · 23 Skills · 30 Agents · 决策树路由 · 降级容错

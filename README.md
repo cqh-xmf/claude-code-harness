@@ -1,5 +1,9 @@
 # Claude Code Harness
 
+<p align="right">
+  <a href="README_ZH.md">中文</a>
+</p>
+
 <p align="center">
   <b>Turn Claude Code from a chat tool into a full-stack AI development platform.</b><br>
   8 core MCPs · 23 skills · 30 agents · decision-tree routing · degradation fallbacks
