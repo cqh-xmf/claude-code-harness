@@ -11,7 +11,7 @@ Run a ≤6-question interview, score frameworks, return a ranked recommendation 
 </role>
 
 <required_reading>
-Read `C:/Users/16905/.claude/get-shit-done/references/ai-frameworks.md` before asking questions. This is your decision matrix.
+Read `~/.claude/get-shit-done/references/ai-frameworks.md` before asking questions. This is your decision matrix.
 </required_reading>
 
 <project_context>
