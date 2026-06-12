@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <b>Claude Code 的操作系统。</b><br>
-  意图映射 · 网状容错 · 工具腐化检测
+  <b>Claude Code 的操作系统。活的，不是静态的。</b><br>
+  意图映射 · 网状容错 · 工具腐化检测 · 自动更新
 </p>
 
 <p align="center">
@@ -19,6 +19,7 @@
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen"></a>
   <img src="https://img.shields.io/badge/agents-91-blueviolet">
   <img src="https://img.shields.io/badge/MCPs-8核心_+_17按需-orange">
+  <img src="https://img.shields.io/badge/自动更新-✅-success">
 </p>
 
 ---
@@ -34,7 +35,7 @@
 | **代码审查** | 手动选 agent | 14 种语言自动路由 |
 | **新项目** | 从零写 CLAUDE.md | `cp templates/react.md ./CLAUDE.md` |
 | **Token 预算** | 要么全加载要么裸奔 | 8核心自动 + 17按需 = 精细管理 |
-| **过期检测** | 不知道哪些已经落后 | `mcp freshness` — 自动检查更新 |
+| **过期检测** | 不知道哪些已经落后 | **活系统** — `mcp freshness` 检测 + `mcp update` 自动修复 |
 
 ---
 
@@ -101,7 +102,8 @@ mcp enable <名称>     # 启用任意按需 MCP
 mcp disable <名称>    # 禁用（核心 MCP 受保护）
 mcp enable-all search # 一次启用整组
 mcp health            # 健康检查 + 冷启动耗时
-mcp freshness         # 检查 MCP 更新 + 新发现
+mcp freshness         # 检测过期 + 发现新 MCP
+mcp update            # 一键自动更新全部
 mcp recipe <配方名>   # 触发多工具组合工作流
 mcp score             # 获取 Harness Score（0-100）
 ```

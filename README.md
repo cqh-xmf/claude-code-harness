@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <b>The missing OS for Claude Code.</b><br>
-  Intent-to-Tool Mapping · Degradation Mesh · Tool Rot Detection
+  <b>The missing OS for Claude Code. Living, not static.</b><br>
+  Intent-to-Tool Mapping · Degradation Mesh · Tool Rot Detection · Self-Updating
 </p>
 
 <p align="center">
@@ -19,6 +19,7 @@
   <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen"></a>
   <img src="https://img.shields.io/badge/agents-91-blueviolet">
   <img src="https://img.shields.io/badge/MCPs-8_core_+_17_on--demand-orange">
+  <img src="https://img.shields.io/badge/self--updating-✅-success">
 </p>
 
 ---
@@ -34,7 +35,7 @@
 | **Code review** | Manual agent selection | Auto-routed by language (14 languages) |
 | **New project** | Write CLAUDE.md from scratch | `cp templates/react.md ./CLAUDE.md` |
 | **Token budget** | Load everything or nothing | 8 core auto + 17 on-demand = managed |
-| **Staleness** | Never know what's outdated | `mcp freshness` — checks npm + upstream |
+| **Staleness** | Never know what's outdated | **Living System** — `mcp freshness` detects, `mcp update` auto-fixes |
 
 ---
 
@@ -101,7 +102,8 @@ mcp enable <name>     # Enable any of 17 on-demand MCPs
 mcp disable <name>    # Disable (core MCPs protected)
 mcp enable-all search # Enable entire group at once
 mcp health            # Health check with cold-start timing
-mcp freshness         # Check for outdated MCPs + new discoveries
+mcp freshness         # Detect outdated MCPs + discover new ones
+mcp update            # Auto-update everything (npm + agents + rules)
 mcp recipe <name>     # Trigger multi-tool workflows
 mcp score             # Get your Harness Score (0–100)
 ```
@@ -110,25 +112,46 @@ mcp score             # Get your Harness Score (0–100)
 
 ## Freshness — the living system
 
-Unlike static config collections, Harness checks for staleness:
+**This is what makes Harness different from every other Claude Code config.** It doesn't just give you tools — it keeps them alive.
+
+### Detection: `mcp freshness`
+
+Checks npm registry for every MCP package, scans upstream for agent/rule updates, and discovers new community MCPs:
 
 ```bash
 $ mcp freshness
 
-Checking 25 MCPs against npm registry...
+MCP Packages (npm):
   context7:      @upstash/context7-mcp      ✅ latest (v2.1.0)
-  firecrawl:     firecrawl-mcp              ⚠️  v1.2.0 → v1.3.1 available
-  tavily:        @tavily/mcp-server-tavily  ✅ latest
+  firecrawl:     firecrawl-mcp              ⚠️  v1.2.0 → v1.3.1
   ...
 
-Agents (91):  checking upstream ECC repo...  3 updates available
-Rules (29):   checking upstream ECC repo...  up to date
+Agents (91):  ECC upstream check...  3 updates available
+Rules (29):   ECC upstream check...  up to date
 
-Freshness score: 84/100
-  Run: mcp update to apply available updates
+Community Discovery (GitHub):
+  anthropics/mcp-server-rag (420★) — RAG-powered MCP server
+  vercel/mcp-toolkit (380★) — Vercel deployment tools
+
+Freshness: 84/100 — 3 stale, 2 new MCPs discovered
 ```
 
-Never wonder if your tooling is stale again.
+### Auto-Update: `mcp update`
+
+One command. Updates everything:
+
+```bash
+$ mcp update
+
+Updating MCP npm packages...  8/8 confirmed latest
+Updating Agents & Rules...    3 agents updated from ECC upstream
+Scanning GitHub for new MCPs...  2 new MCPs discovered
+
+Done. Your Harness is current.
+💡 Tip: add 'mcp update' to weekly crontab for hands-free maintenance
+```
+
+**This is the difference between a static collection and a living system.** Other configs rot. Harness self-heals.
 
 ---
 
