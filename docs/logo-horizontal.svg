@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-label="Claude Code Harness logo">
+  <defs>
+    <linearGradient id="hubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="centerGrad" x1="50%" y1="50%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c7d2fe"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="300" fill="#0f172a" rx="16"/>
+
+  <!-- === ICON (left side) === -->
+  <g transform="translate(170, 150)">
+    <!-- Outer orbit -->
+    <circle cx="0" cy="0" r="90" fill="none" stroke="url(#ringGrad)" stroke-width="1" opacity="0.2"/>
+    <circle cx="0" cy="0" r="70" fill="none" stroke="url(#ringGrad)" stroke-width="0.8" opacity="0.15" stroke-dasharray="4 8"/>
+
+    <!-- Connecting lines -->
+    <g stroke="url(#ringGrad)" stroke-width="1.5" opacity="0.35" fill="none" stroke-linecap="round">
+      <line x1="0" y1="0" x2="0"   y2="-90"/>
+      <line x1="0" y1="0" x2="64"  y2="-64"/>
+      <line x1="0" y1="0" x2="90"  y2="0"/>
+      <line x1="0" y1="0" x2="64"  y2="64"/>
+      <line x1="0" y1="0" x2="0"   y2="90"/>
+      <line x1="0" y1="0" x2="-64" y2="64"/>
+      <line x1="0" y1="0" x2="-90" y2="0"/>
+      <line x1="0" y1="0" x2="-64" y2="-64"/>
+    </g>
+
+    <!-- 8 nodes -->
+    <g filter="url(#glow)">
+      <circle cx="0"   cy="-90" r="8" fill="url(#hubGrad)"/>
+      <circle cx="90"  cy="0"   r="8" fill="url(#hubGrad)"/>
+      <circle cx="0"   cy="90"  r="8" fill="url(#hubGrad)"/>
+      <circle cx="-90" cy="0"   r="8" fill="url(#hubGrad)"/>
+      <circle cx="64"  cy="-64" r="6" fill="url(#hubGrad)" opacity="0.85"/>
+      <circle cx="64"  cy="64"  r="6" fill="url(#hubGrad)" opacity="0.85"/>
+      <circle cx="-64" cy="64"  r="6" fill="url(#hubGrad)" opacity="0.85"/>
+      <circle cx="-64" cy="-64" r="6" fill="url(#hubGrad)" opacity="0.85"/>
+    </g>
+
+    <!-- Center -->
+    <circle cx="0" cy="0" r="19" fill="#0f172a" stroke="url(#centerGrad)" stroke-width="2"/>
+    <text x="0" y="7" text-anchor="middle" fill="url(#centerGrad)" font-family="system-ui, sans-serif" font-size="18" font-weight="700">C</text>
+  </g>
+
+  <!-- === TEXT (right side) === -->
+  <g transform="translate(370, 125)">
+    <!-- Main title -->
+    <text x="0" y="0" fill="url(#textGrad)" font-family="system-ui, -apple-system, sans-serif" font-size="42" font-weight="700" letter-spacing="1">
+      Claude Code
+    </text>
+
+    <!-- "Harness" with accent -->
+    <text x="0" y="48" fill="url(#accentGrad)" font-family="system-ui, -apple-system, sans-serif" font-size="42" font-weight="700" letter-spacing="1">
+      Harness
+    </text>
+
+    <!-- Tagline -->
+    <text x="2" y="80" fill="#64748b" font-family="system-ui, sans-serif" font-size="15" font-weight="400" letter-spacing="0.5">
+      Turn Claude Code into a full-stack AI development platform.
+    </text>
+  </g>
+</svg>

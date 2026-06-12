@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-label="Claude Code Harness logo light">
+  <defs>
+    <linearGradient id="hubGradL" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="ringGradL" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="textGradL" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="accentGradL" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <filter id="glowL">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="300" fill="#f8fafc" rx="16"/>
+
+  <!-- Subtle bg pattern -->
+  <circle cx="100" cy="50" r="200" fill="#6366f1" opacity="0.03"/>
+  <circle cx="800" cy="250" r="200" fill="#06b6d4" opacity="0.03"/>
+
+  <!-- === ICON === -->
+  <g transform="translate(170, 150)">
+    <circle cx="0" cy="0" r="95" fill="white" stroke="#e2e8f0" stroke-width="1"/>
+    <circle cx="0" cy="0" r="90" fill="none" stroke="url(#ringGradL)" stroke-width="1.5" opacity="0.3"/>
+    <circle cx="0" cy="0" r="70" fill="none" stroke="url(#ringGradL)" stroke-width="1" opacity="0.2" stroke-dasharray="4 8"/>
+
+    <g stroke="url(#ringGradL)" stroke-width="2" opacity="0.4" fill="none" stroke-linecap="round">
+      <line x1="0" y1="0" x2="0"   y2="-90"/>
+      <line x1="0" y1="0" x2="64"  y2="-64"/>
+      <line x1="0" y1="0" x2="90"  y2="0"/>
+      <line x1="0" y1="0" x2="64"  y2="64"/>
+      <line x1="0" y1="0" x2="0"   y2="90"/>
+      <line x1="0" y1="0" x2="-64" y2="64"/>
+      <line x1="0" y1="0" x2="-90" y2="0"/>
+      <line x1="0" y1="0" x2="-64" y2="-64"/>
+    </g>
+
+    <g filter="url(#glowL)">
+      <circle cx="0"   cy="-90" r="8" fill="url(#hubGradL)"/>
+      <circle cx="90"  cy="0"   r="8" fill="url(#hubGradL)"/>
+      <circle cx="0"   cy="90"  r="8" fill="url(#hubGradL)"/>
+      <circle cx="-90" cy="0"   r="8" fill="url(#hubGradL)"/>
+      <circle cx="64"  cy="-64" r="6" fill="url(#hubGradL)" opacity="0.85"/>
+      <circle cx="64"  cy="64"  r="6" fill="url(#hubGradL)" opacity="0.85"/>
+      <circle cx="-64" cy="64"  r="6" fill="url(#hubGradL)" opacity="0.85"/>
+      <circle cx="-64" cy="-64" r="6" fill="url(#hubGradL)" opacity="0.85"/>
+    </g>
+
+    <circle cx="0" cy="0" r="19" fill="white" stroke="url(#hubGradL)" stroke-width="2"/>
+    <text x="0" y="7" text-anchor="middle" fill="url(#hubGradL)" font-family="system-ui" font-size="18" font-weight="700">C</text>
+  </g>
+
+  <!-- === TEXT === -->
+  <g transform="translate(370, 125)">
+    <text x="0" y="0" fill="url(#textGradL)" font-family="system-ui, sans-serif" font-size="42" font-weight="700" letter-spacing="1">
+      Claude Code
+    </text>
+    <text x="0" y="48" fill="url(#accentGradL)" font-family="system-ui, sans-serif" font-size="42" font-weight="700" letter-spacing="1">
+      Harness
+    </text>
+    <text x="2" y="80" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="15" font-weight="400" letter-spacing="0.5">
+      Turn Claude Code into a full-stack AI development platform.
+    </text>
+  </g>
+</svg>
