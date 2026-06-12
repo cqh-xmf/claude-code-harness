@@ -2,16 +2,48 @@
 
 ## Overview
 
-Claude Code Harness transforms vanilla Claude Code into a full-stack AI development platform through three layers:
+Claude Code Harness transforms vanilla Claude Code into a full-stack AI development platform through four layers:
+
+```mermaid
+flowchart TD
+    U["You: 'Review src/auth.ts for security'"] --> I2T
+
+    subgraph I2T["I2T Engine (CLAUDE.md)"]
+        direction LR
+        A[Parse Intent] --> B[Detect File Type]
+        B --> C[Match Keywords]
+        C --> D[Select Tools]
+        D --> E[Execute Chain]
+    end
+
+    I2T --> MCP["8 Core MCPs"]
+    I2T --> SKILL["23 Skills"]
+    I2T --> AGENT["91 Agents"]
+
+    MCP --> DM["Degradation Mesh"]
+    SKILL --> DM
+    AGENT --> DM
+
+    DM --> |"Tool A fails"| FB1["Fallback Tier 1"]
+    FB1 --> |"Fails"| FB2["Fallback Tier 2"]
+    FB2 --> |"Fails"| FB3["Fallback Tier 3"]
+
+    DM --> TRD["Tool Rot Detection"]
+    TRD --> |"Unused tools"| FLAG["Flagged for cleanup"]
+
+    DM --> RESULT["Result returned to user"]
+```
+
+## Layer 1: I2T Engine (Intent-to-Tool Mapping)
+
+The core innovation. A natural-language compiler that translates human intent into tool execution chains.
 
 ```
-Layer 1: Infrastructure     Layer 2: Intelligence      Layer 3: Resilience
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│ 8 Core MCPs      │    │ Decision Tree    │    │ Degradation Map  │
-│ 17 On-Demand MCPs│───▶│ Routing Table    │───▶│ Fallback Chain   │
-│ 23 Skills        │    │ Tool Selection   │    │ Anti-Dust System │
-│ 30 Agents        │    │ Language Routing │    │ Health Monitor   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+Input: "Build a landing page"
+  → Keyword: "landing page" → frontend-design skill
+  → Keyword: "build" → planner agent (plan first)
+  → Context: new project → react.md template
+  → Execute: planner → frontend-design → magic MCP (for components)
 ```
 
 ## Layer 1: Infrastructure
