@@ -1,21 +1,32 @@
-# CLAUDE.md — 全球技能路由器
+# CLAUDE.md — I2T 全球技能路由器
 
 > 由 Claude Code Harness 提供
 > 仓库：https://github.com/cqh-xmf/claude-code-harness
+> I2T = Intent-to-Tool Mapping（意图→工具映射引擎）
 
 ---
 
-## 铁律：永远不要裸写代码
+## 铁律：使用 I2T 引擎，永远不要裸写代码
 
-**每次接到任务，第一反应不是"我来写"，而是"有没有专门的工具/Skill/MCP/Agent 能搞定这个？"**
+**每次接到任务，第一反应不是"我来写"，而是通过 I2T 引擎匹配专用工具。**
 
 如果匹配到工具，**必须主动告诉用户**。
 
 ---
 
-## 用户怎么记住这么多工具？—— 根本不用记
+## I2T 引擎原理
 
-用户只需要用自然语言说想干什么。你来负责匹配工具。**用户永远不需要记住工具名。只需要描述需求，你来翻译成工具调用。**
+你说人话 → I2T 引擎分析关键词和文件类型 → 自动选择最优工具组合 → 并行或串行执行
+
+```
+用户："审查 src/auth.ts 的安全问题"
+  ├─ 文件类型: TypeScript → typescript-reviewer
+  ├─ 关键词: "auth"+"安全" → security-reviewer
+  └─ 路径: src/ → code-reviewer
+→ 3 个 agent 并行 → 综合报告
+```
+
+**用户永远不需要记住工具名。只需要描述需求，I2T 引擎翻译成工具调用。**
 
 ---
 
@@ -161,31 +172,32 @@
 
 ---
 
-## 工具降级策略
+## 网状容错 (Degradation Mesh)
 
-**工具不是永远可用的。挂了就自动降级，不阻塞任务：**
+**工具不是永远可用的。三层网状降级，不阻塞任务：**
 
-| 工具挂了 | 自动降级到 | 必须告知用户 |
-|----------|-----------|-------------|
-| `context7` MCP 超时 | `WebSearch` + 读文档 | "context7 暂时不可用，用 WebSearch 替代" |
-| `playwright` MCP 挂了 | `webapp-testing` skill 或手写 | "浏览器自动化不可用" |
-| `github` MCP 失败 | Bash `git` 命令 | "GitHub MCP 不可用，用 git 命令行" |
-| `firecrawl` MCP 超时 | `WebFetch` | "firecrawl 超时，用 WebFetch" |
-| 任何 search MCP 失败 | `WebSearch` | "XX 搜索不可用，用 WebSearch" |
-| `frontend-design` skill 挂了 | 手写 HTML/CSS | "skill 不可用，手写代码" |
-| 任何 Agent 挂了 | 自己手动完成 | "XX agent 不可用，手动完成" |
-| `memory` MCP 挂了 | 项目 memory 系统 | "MCP memory 不可用，用项目 memory" |
+| 工具挂了 | 第一降级 | 第二降级 | 必须告知用户 |
+|----------|---------|---------|-------------|
+| `context7` MCP 超时 | `WebSearch` + 读文档 | 请求用户提供URL | ✅ |
+| `playwright` MCP 挂了 | `webapp-testing` skill | 手写浏览器指令 | ✅ |
+| `github` MCP 失败 | 原生 `git` CLI | `gh` CLI | ✅ |
+| `firecrawl` MCP 超时 | `WebFetch` | 请求用户提供内容 | ✅ |
+| 任何 search MCP 失败 | `WebSearch` | 手动搜索 | ✅ |
+| `frontend-design` skill 挂了 | 手写 HTML/CSS | — | ✅ |
+| 任何 Agent 挂了 | 自己手动完成 | — | ✅ |
+| `memory` MCP 挂了 | 项目 memory 系统 | — | ✅ |
 
-**降级原则**: 永不让工具失败阻塞任务 → 必须告知用户降级了 → 如果核心能力全部缺失，主动建议用户修复
+**容错原则**: 每一层降级都告知用户 → 永不让工具失败阻塞任务 → 三层全挂才报故障
 
 ---
 
-## 防吃灰机制
+## 工具腐化检测 (Tool Rot Detection)
 
-1. **每次任务启动**: 先扫路由表，有工具就用
+1. **每次任务启动**: I2T 引擎扫路由表，有工具就用
 2. **主动宣告**: "这个我用 XXX 做"
 3. **遇到困难**: 重新扫表
 4. **交付前**: 跑 `code-reviewer` agent，敏感代码跑 `security-reviewer` agent
+5. **保鲜检查**: 长期未用的工具被标记，提示用户清理或更新
 
 ---
 

@@ -9,152 +9,179 @@
 </p>
 
 <p align="center">
-  <b>Turn Claude Code from a chat tool into a full-stack AI development platform.</b><br>
-  8 core MCPs · 23 skills · 30 agents · decision-tree routing · degradation fallbacks
+  <b>The missing OS for Claude Code.</b><br>
+  Intent-to-Tool Mapping · Degradation Mesh · Tool Rot Detection
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/demo.gif" width="700" alt="Demo">
-</p>
-
-<p align="center">
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
-  <a href="#"><img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen.svg"></a>
-  <a href="#"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue"></a>
+  <a href="#"><img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen"></a>
+  <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen"></a>
+  <img src="https://img.shields.io/badge/agents-91-blueviolet">
+  <img src="https://img.shields.io/badge/MCPs-8_core_+_17_on--demand-orange">
 </p>
 
 ---
 
-## What is this?
+## Before vs After
 
-Claude Code ships with **zero pre-configuration**. Every user spends hours:
-
-- Wiring MCP servers one by one
-- Writing a CLAUDE.md from scratch
-- Finding and installing skills
-- Debugging authentication and paths
-- Figuring out which tool to use for which task
-
-**This harness gives you a battle-tested, production-ready setup in one command.**
+|  | Without Harness | With Harness |
+|--|----------------|--------------|
+| **Setup** | 3+ hours wiring MCPs manually | `bash install.sh` — 1 command |
+| **Tool selection** | "Which skill handles PPT?" | **I2T Engine** — just talk naturally |
+| **When tools fail** | Task blocked, debug manually | **Degradation Mesh** — 3-tier auto-fallback |
+| **Unused tools** | Clutter context forever | **Tool Rot Detection** — flagged, cleaned |
+| **Code review** | Manual agent selection | Auto-routed by language (14 languages) |
+| **New project** | Write CLAUDE.md from scratch | `cp templates/react.md ./CLAUDE.md` |
+| **Token budget** | Load everything or nothing | 8 core auto + 17 on-demand = managed |
+| **Staleness** | Never know what's outdated | `mcp freshness` — checks npm + upstream |
 
 ---
 
-## One-command install
+## What makes it different
+
+### I2T Engine (Intent-to-Tool Mapping)
+
+You talk. It thinks. The routing table is a **natural-language compiler** that translates human intent into tool execution chains.
+
+```
+YOU: "Review src/auth.ts for security issues"
+
+I2T ENGINE (internal decision chain):
+  ├─ Detects: TypeScript file → selects typescript-reviewer agent
+  ├─ Detects: "auth" + "security" keywords → layers security-reviewer agent
+  ├─ Detects: file path contains "src/" → adds code-reviewer agent
+  └─ Executes: 3 agents in parallel → returns combined report
+
+You typed one sentence. Three agents ran. Zero tool names memorized.
+```
+
+### Degradation Mesh
+
+Not a single fallback. A **3-tier mesh**:
+
+```
+context7 timeout → WebSearch + manual docs → ask user for URL
+playwright fails → webapp-testing skill → manual browser instructions
+github MCP down → native git CLI → gh CLI → manual git commands
+firecrawl timeout → WebFetch → ask user for page content
+```
+
+Every tool has a fallback. No task is blocked by a dead MCP.
+
+### Tool Rot Detection
+
+Like dead-code detection, but for AI tools. Unused MCPs and agents are flagged across sessions. Keeps your context window lean.
+
+---
+
+## One command
 
 ```bash
 git clone https://github.com/cqh-xmf/claude-code-harness.git ~/.claude-harness
 bash ~/.claude-harness/scripts/install.sh
 ```
 
-Restart Claude Code. Done.
+This deploys:
+- **CLAUDE.md** — the I2T routing engine
+- **91 agents** — language reviewers, security auditors, test runners, planners
+- **29 rules** — coding standards, security policies, testing requirements
+- **8 core MCPs** — context7, playwright, github, firecrawl, memory, filesystem, magic, sequential-thinking
+- **17 on-demand MCPs** — one command away: `mcp enable fal-ai`
+- **5 project templates** — React, Python, Node, Next.js, generic
+- **Management CLI** — `mcp list`, `mcp health`, `mcp freshness`, `mcp recipe`
 
 ---
 
-## What you get
-
-### 8 Core MCPs (pre-configured, auto-started)
-
-| MCP | What it does |
-|-----|-------------|
-| `context7` | Live docs lookup for any library/framework/SDK |
-| `sequential-thinking` | Chain-of-thought reasoning for complex problems |
-| `memory` | Cross-session knowledge graph |
-| `filesystem` | Scoped file operations |
-| `magic` | 50+ animated React UI components |
-| `playwright` | Browser automation & testing |
-| `github` | Full GitHub operations (PR, Issue, search) |
-| `firecrawl` | Web scraping → Markdown |
-
-### 17 On-Demand MCPs (cataloged, one command to enable)
-
-Search: `exa-web-search`, `tavily`, `brave-search`
-Media: `fal-ai`, `figma`
-Platform: `notion`, `slack`, `linear`, `jira`, `confluence`, `supabase`
-Deploy: `vercel`, `cloudflare-docs`, `clickhouse`
-Browser: `browserbase`, `browser-use`
-Tools: `longhand`, `evalview`, `devfleet`
+## The CLI
 
 ```bash
-bash ~/.claude-harness/scripts/mcp-toggle.sh enable fal-ai   # enable one
-bash ~/.claude-harness/scripts/mcp-toggle.sh enable-all search  # enable group
-bash ~/.claude-harness/scripts/mcp-toggle.sh list              # see all
+mcp list              # See all MCPs, grouped by category
+mcp enable <name>     # Enable any of 17 on-demand MCPs
+mcp disable <name>    # Disable (core MCPs protected)
+mcp enable-all search # Enable entire group at once
+mcp health            # Health check with cold-start timing
+mcp freshness         # Check for outdated MCPs + new discoveries
+mcp recipe <name>     # Trigger multi-tool workflows
+mcp score             # Get your Harness Score (0–100)
 ```
 
-### Intelligent Tool Routing
+---
 
-You talk naturally. The router picks the right tool.
+## Freshness — the living system
 
-| You say... | It uses... |
-|------------|-----------|
-| "Make a PPT" | `pptx` skill |
-| "Build a landing page" | `frontend-design` skill |
-| "Add animation to this component" | `ui-animation` skill |
-| "Review my code" | `code-reviewer` agent |
-| "Write tests for this" | `tdd-guide` agent |
-| "Check this for security issues" | `security-reviewer` agent |
-| "What does React 19's API look like?" | `context7` MCP |
-| "Scrape that page" | `firecrawl` MCP |
-| "Create a logo" | `svg-logo-designer` skill |
-
-### Degradation Strategy
-
-If a tool fails, it doesn't block your task. The harness auto-falls-back.
-
-| Tool down | Auto-fallback |
-|-----------|--------------|
-| `context7` timeout | WebSearch + manual docs |
-| `playwright` fails | `webapp-testing` skill |
-| `github` MCP fails | Native `git` CLI |
-| `firecrawl` timeout | `WebFetch` |
-| Any search MCP | `WebSearch` |
-| Any agent | Manual completion |
-
-### Anti-Dust System
-
-Tools you never use get flagged. No wasted context window.
-
-### Project Templates
-
-Drop a ready-made CLAUDE.md into any new project.
+Unlike static config collections, Harness checks for staleness:
 
 ```bash
-cp ~/.claude-harness/templates/project-claude-md/react.md ./CLAUDE.md
+$ mcp freshness
+
+Checking 25 MCPs against npm registry...
+  context7:      @upstash/context7-mcp      ✅ latest (v2.1.0)
+  firecrawl:     firecrawl-mcp              ⚠️  v1.2.0 → v1.3.1 available
+  tavily:        @tavily/mcp-server-tavily  ✅ latest
+  ...
+
+Agents (91):  checking upstream ECC repo...  3 updates available
+Rules (29):   checking upstream ECC repo...  up to date
+
+Freshness score: 84/100
+  Run: mcp update to apply available updates
 ```
 
-Templates: `react` · `python` · `node` · `nextjs` · `generic`
+Never wonder if your tooling is stale again.
 
-### Health Check & Performance Baseline
+---
+
+## Harness Score
 
 ```bash
-bash ~/.claude-harness/scripts/mcp-health.sh
+$ mcp score
+
+  Claude Code Harness Score: 87/100
+
+  MCP Online:       8/8   (25 pts) ✅
+  Tokens Set:       2/3   (12 pts) ⚠️  FIRECRAWL_API_KEY missing
+  Agents Ready:    91/91  (20 pts) ✅
+  Rules Active:    29/29  (15 pts) ✅
+  Freshness:        84%   (10 pts) ⚠️  3 updates available
+  Recipes:           0/4   (0 pts)  💡 Try: mcp recipe list
+  Templates:         5/5   (5 pts)  ✅
 ```
 
-Shows: which MCPs are active, cold-start timing, token status, runtime versions.
+Share your score. Compare with others. Keep improving.
 
 ---
 
 ## Architecture
 
 ```
-                    ┌─────────────────────────────┐
-                    │     CLAUDE.md (Router)       │
-                    │  "What does the user need?"  │
-                    └─────────────┬───────────────┘
-                                  │
-          ┌───────────────────────┼───────────────────────┐
-          │                       │                       │
-          ▼                       ▼                       ▼
-   ┌──────────────┐      ┌──────────────┐      ┌──────────────┐
-   │  8 Core MCPs │      │  23 Skills   │      │  30 Agents   │
-   │  (auto-load) │      │  (on-demand) │      │  (on-demand) │
-   └──────────────┘      └──────────────┘      └──────────────┘
-          │                       │                       │
-          └───────────────────────┼───────────────────────┘
-                                  │
-                          ┌───────▼────────┐
-                          │  Fallback Map   │
-                          │  Tool A↓ → B    │
-                          └────────────────┘
+YOU SAY: "Build a landing page"
+         │
+         ▼
+┌─────────────────────────────────┐
+│       I2T ENGINE (CLAUDE.md)    │
+│  Intent → Tool Mapping          │
+│  "landing page" → frontend skill│
+└─────────────┬───────────────────┘
+              │
+    ┌─────────┼─────────┐
+    ▼         ▼         ▼
+┌────────┐ ┌────────┐ ┌────────┐
+│ 8 CORE │ │23 SKILL│ │91 AGENT│
+│  MCPs  │ │   S    │ │   S    │
+└───┬────┘ └───┬────┘ └───┬────┘
+    │          │          │
+    └──────────┼──────────┘
+               │
+    ┌──────────▼──────────┐
+    │  DEGRADATION MESH   │
+    │  Tool A↓ → B↓ → C   │
+    └──────────┬──────────┘
+               │
+    ┌──────────▼──────────┐
+    │  TOOL ROT DETECTION │
+    │  Unused → Flagged   │
+    └─────────────────────┘
 ```
 
 ---
@@ -163,80 +190,56 @@ Shows: which MCPs are active, cold-start timing, token status, runtime versions.
 
 ```
 claude-code-harness/
-├── README.md                   ← You are here
-├── README_ZH.md                ← 中文版
-├── LICENSE                     ← MIT
-├── .gitignore                  ← Protects your secrets
-├── CLAUDE.md                   ← The router (copy to ~/.claude/)
-├── settings.template.json      ← MCP config template
+├── README.md + README_ZH.md    ← Bilingual docs
+├── CLAUDE.md                    ← The I2T Engine (router)
+├── settings.template.json       ← MCP config (no real keys)
+├── LICENSE (MIT) + .gitignore
+│
+├── agents/                      ← 91 agents
+│   ├── code-reviewer.md
+│   ├── security-reviewer.md
+│   ├── typescript-reviewer.md
+│   ├── opensource-forker.md
+│   └── ... (14 language reviewers, planners, debuggers)
+│
+├── rules/                       ← 29 rules (common/web/zh)
+│   ├── common/ (coding-style, security, testing...)
+│   ├── web/ (design-quality, patterns, performance...)
+│   └── zh/ (中文翻译)
+│
 ├── scripts/
-│   ├── install.sh              ← One-command bootstrap
-│   ├── mcp-toggle.sh           ← Enable/disable MCPs
-│   └── mcp-health.sh           ← Health check + timing
+│   ├── install.sh               ← One-command bootstrap
+│   ├── mcp-toggle.sh            ← MCP enable/disable/recipe/score/freshness
+│   ├── mcp-health.sh            ← Health check + timing
+│   └── mcp-freshness.sh         ← Staleness detection + auto-update
+│
 ├── mcp-configs/
-│   └── on-demand-mcps.json     ← 17 additional MCP catalog
-├── templates/
-│   └── project-claude-md/      ← Per-project CLAUDE.md templates
-│       ├── react.md
-│       ├── python.md
-│       ├── node.md
-│       ├── nextjs.md
-│       └── generic.md
+│   ├── on-demand-mcps.json      ← 17 cataloged MCPs
+│   └── recipes.json             ← Multi-tool workflows
+│
+├── templates/project-claude-md/ ← Project quick-start
+│   ├── react.md, python.md, node.md, nextjs.md, generic.md
+│
 └── docs/
-    ├── architecture.md
-    ├── agents-catalog.md
-    └── screenshots/
+    ├── architecture.md, agents-catalog.md
+    └── logo-*.svg (4 variants)
 ```
-
----
-
-## Requirements
-
-- **Claude Code** v2.1.150+ (any platform)
-- **Node.js** 18+ (for npx-based MCPs)
-- **Git** (for github MCP)
-- **Python 3** (for mcp-toggle.sh)
-
-### Optional tokens (for full functionality)
-
-| Token | Purpose | Get it at |
-|-------|---------|-----------|
-| `DEEPSEEK_API_KEY` | If using DeepSeek proxy | platform.deepseek.com |
-| `GITHUB_PAT` | GitHub MCP | github.com/settings/tokens |
-| `FIRECRAWL_API_KEY` | Web scraping | firecrawl.dev |
-
----
-
-## Security
-
-- **NEVER commit `settings.json`** — it contains API keys. Use `settings.template.json`.
-- All MCP commands run locally. No data leaves your machine except through APIs you explicitly configure.
-- API keys are read from environment variables (not hardcoded in template).
-- `.gitignore` blocks `settings.json`, `.env`, backups, and personal directories.
 
 ---
 
 ## FAQ
 
-**Q: Does this replace my existing CLAUDE.md?**
-A: It augments it. The harness CLAUDE.md goes to `~/.claude/CLAUDE.md` (global). Your project CLAUDE.md stays in your project root. Both are loaded.
+**Is this just a collection of other people's work?**
+No. The I2T Engine, Degradation Mesh, and Tool Rot Detection are original. The MCP configs, agents, and rules are battle-tested components from the community — organized, routed, and kept fresh by Harness. Think of it as an OS: the kernel is yours; the drivers are from the ecosystem.
 
-**Q: What if I already have some MCPs configured?**
-A: The install script backs up your existing `settings.json` before generating a new one.
+**Does this work with Anthropic's official API?**
+Yes. Edit `settings.json` → `env.ANTHROPIC_BASE_URL` to `https://api.anthropic.com`.
 
-**Q: Can I remove MCPs I don't need?**
-A: Yes. `mcp-toggle.sh disable <name>` removes it cleanly. Or edit `settings.json` directly.
+**Can I use only parts of it?**
+Yes. Everything is optional. Use just the MCP catalog, or just the routing table, or the full stack.
 
-**Q: Does this work with official Anthropic API?**
-A: Yes. Just set `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN` accordingly in the top-level `env` of `settings.json`.
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-New MCPs, skills, and routing rules are welcome. Open an issue or PR.
+**How do I contribute?**
+See [CONTRIBUTING.md](CONTRIBUTING.md). Add MCPs, agents, recipes, or improve the routing table.
 
 ---
 
@@ -247,5 +250,5 @@ MIT — use it, fork it, ship it.
 ---
 
 <p align="center">
-  <sub>Built for developers who want Claude Code at full power, instantly.</sub>
+  <sub>Built to make Claude Code run at full power, from the first command.</sub>
 </p>
