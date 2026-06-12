@@ -100,6 +100,25 @@ else
   echo -e "  [$WARN] Playwright install failed — run: npx playwright install chrome"
 fi
 
+# --- Install Agents ---
+echo ""
+echo "--- Installing Agents ---"
+mkdir -p "$CLAUDE_HOME/agents"
+AGENT_COUNT=$(ls "$HARNESS_DIR/agents/"*.md 2>/dev/null | wc -l)
+cp "$HARNESS_DIR/agents/"*.md "$CLAUDE_HOME/agents/" 2>/dev/null || true
+echo -e "  [$PASS] $AGENT_COUNT agents installed"
+
+# --- Install Rules ---
+echo ""
+echo "--- Installing Rules ---"
+for RULESET in common web zh; do
+  if [ -d "$HARNESS_DIR/rules/$RULESET" ]; then
+    mkdir -p "$CLAUDE_HOME/rules/$RULESET"
+    cp "$HARNESS_DIR/rules/$RULESET/"*.md "$CLAUDE_HOME/rules/$RULESET/" 2>/dev/null || true
+    echo -e "  [$PASS] rules/$RULESET installed"
+  fi
+done
+
 # --- Copy MCP configs ---
 echo ""
 echo "--- Installing MCP on-demand catalog ---"
