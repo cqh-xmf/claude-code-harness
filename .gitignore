@@ -1,0 +1,34 @@
+# Claude Code Harness .gitignore
+# NEVER commit real settings or credentials
+
+# The real settings.json (contains API keys) — template only
+settings.json
+
+# Backup files
+*.backup.*
+*.bak
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets (just in case)
+.env
+.env.local
+*.pem
+*.key
+
+# Personal memory / project data
+memory/
+projects/
+
+# Logs
+*.log

@@ -1,0 +1,62 @@
+{
+  "_description": "Claude Code Harness — MCP server configuration template",
+  "_usage": "Run install.sh to generate your real settings.json. NEVER commit settings.json.",
+  "_docs": "https://github.com/cqh-xmf/claude-code-harness",
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.150",
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.anthropic.com",
+    "ANTHROPIC_AUTH_TOKEN": "{{ANTHROPIC_AUTH_TOKEN}}",
+    "ANTHROPIC_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-7",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "80"
+  },
+  "_env_note": "Edit the env block above for your setup. DeepSeek users: set ANTHROPIC_BASE_URL to https://api.deepseek.com/anthropic and use your DeepSeek model names.",
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "description": "CORE | Live documentation lookup for any library/framework/SDK"
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "description": "CORE | Chain-of-thought reasoning for complex problems"
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "CORE | Persistent knowledge graph memory across sessions"
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "{{USERPROFILE}}/Desktop/projects", "{{USERPROFILE}}/Desktop", "{{USERPROFILE}}/Documents"],
+      "description": "CORE | Filesystem ops. Edit paths in settings.json to match your directories."
+    },
+    "magic": {
+      "command": "npx",
+      "args": ["-y", "@magicuidesign/mcp@latest"],
+      "description": "CORE | 50+ animated React UI components for frontend"
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp", "--browser", "chromium"],
+      "description": "CORE | Browser automation. Requires: npx playwright install chrome"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PAT}" },
+      "description": "CORE | GitHub operations. Requires: set GITHUB_PAT env var"
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": { "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}" },
+      "description": "CORE | Web scraping to Markdown. Requires: set FIRECRAWL_API_KEY env var"
+    }
+  }
+}
